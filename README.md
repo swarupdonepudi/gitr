@@ -6,7 +6,7 @@ You are in your terminal inside a subdirectory of a git repo, and you just pushe
 your readme looks like on the web page of the repo, or you want to see if the pipeline has been triggered for this
 commit.
 
-*before gitr:*
+_before gitr:_
 
 1. open web browser
 2. go to gitlab.com
@@ -14,7 +14,7 @@ commit.
 4. click on the repo
 5. after the home page is loaded then locate the icon on the page to go to the pipelines section and click on it
 
-*with gitr:*
+_with gitr:_
 
 from any subdirectory under any git repo in the terminal
 
@@ -22,18 +22,18 @@ from any subdirectory under any git repo in the terminal
 
 > same for prs, tags, releases, issues, branches, commits etc...
 
-* [why should i use it?](#why-should-i-use-it)
-* [install](#install)
-* [supported providers](#scm-providers)
-* [features](#features)
-    * [gitr web](#gitr-web)
-    * [gitr clone](#gitr-clone)
-* [gitr config](#config-file)
-* [on-prem scm deployments](#on-prem-scm-deployments)
-* [dry-run](#dry-run)
-* [aliases](#aliases)
-* [cleanup](#cleanup)
-* [contribute](#contribute)
+- [why should i use it?](#why-should-i-use-it)
+- [install](#install)
+- [supported providers](#scm-providers)
+- [features](#features)
+  - [gitr web](#gitr-web)
+  - [gitr clone](#gitr-clone)
+- [gitr config](#config-file)
+- [on-prem scm deployments](#on-prem-scm-deployments)
+- [dry-run](#dry-run)
+- [aliases](#aliases)
+- [cleanup](#cleanup)
+- [contribute](#contribute)
 
 # why should i use it?
 
@@ -58,16 +58,16 @@ brew install gitr
 
 `gitr` currently, supports the following scm providers. We can always add support for more if there is demand.
 
-* github
-* gitlab
-* bitbucket
+- github
+- gitlab
+- bitbucket
 
 ### features
 
 | feature     | description                                                                                                                                                                                                                                                     |
-|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| gitr config | display gitr config                                                                                                                                                                                                                                             | 
-| gitr web    | open a repo and different parts of a repo in web browser from command line                                                                                                                                                                                      | 
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| gitr config | display gitr config                                                                                                                                                                                                                                             |
+| gitr web    | open a repo and different parts of a repo in web browser from command line                                                                                                                                                                                      |
 | gitr clone  | organize git repos cloned from different scm providers and also retain their hierarchy on the scm provider on laptops which is not possible with the default `git clone <clone-url>`. This is particularly useful for gitlab as it supports a nested hierarchy. |
 
 #### gitr web
@@ -76,17 +76,17 @@ brew install gitr
 
 > note: the below commands will work only when executed from root or subdirectory of any git repo
 
-| command         |  description                                               |
-|-----------------|------------------------------------------------------------|
-| gitr web        |  open home page of the repo in the browser                 |
-| gitr rem        |  open local checkout branch of the repo in the browser     |
-| gitr prs        |  open prs/mrs of the repo in the browser                   |
-| gitr pipe       |  open pipelines/actions of the repo in the browser         |
-| gitr issues     |  open issues of the repo in the browser                    |
-| gitr releases   |  open releases of the repo in the browser                  |
-| gitr tags       |  open tags of the repo in the browser                      |
-| gitr commits    |  open commits of the local branch of repo in the browser   |
-| gitr branches   |  open branches of the repo in the browser                  |
+| command       | description                                             |
+| ------------- | ------------------------------------------------------- |
+| gitr web      | open home page of the repo in the browser               |
+| gitr rem      | open local checkout branch of the repo in the browser   |
+| gitr prs      | open prs/mrs of the repo in the browser                 |
+| gitr pipe     | open pipelines/actions of the repo in the browser       |
+| gitr issues   | open issues of the repo in the browser                  |
+| gitr releases | open releases of the repo in the browser                |
+| gitr tags     | open tags of the repo in the browser                    |
+| gitr commits  | open commits of the local branch of repo in the browser |
+| gitr branches | open branches of the repo in the browser                |
 
 #### gitr clone
 
@@ -154,7 +154,7 @@ gitlab.com
                ├── Dockerfile
                ├── Makefile
                ├── README.md
-               ├── main.go       
+               ├── main.go
 github.com
 └── swarupdonepudi
     ├── gitr
@@ -181,45 +181,45 @@ scm:
   copyCloneLocationCdCmdToClipboard: false
   homeDir: ""
   hosts:
-  - hostname: github.com
-    provider: github
-    defaultBranch: master
-    clone:
-      homeDir: ""
-      alwaysCreDir: false
-      includeHostForCreDir: false
-    scheme: https
-  - hostname: gitlab.com
-    provider: gitlab
-    defaultBranch: main
-    clone:
-      homeDir: ""
-      alwaysCreDir: false
-      includeHostForCreDir: false
-    scheme: https
-  - hostname: bitbucket.org
-    provider: bitbucket-cloud
-    defaultBranch: master
-    clone:
-      homeDir: ""
-      alwaysCreDir: false
-      includeHostForCreDir: false
-    scheme: https
+    - hostname: github.com
+      provider: github
+      defaultBranch: master
+      clone:
+        homeDir: ""
+        alwaysCreDir: false
+        includeHostForCreDir: false
+      scheme: https
+    - hostname: gitlab.com
+      provider: gitlab
+      defaultBranch: main
+      clone:
+        homeDir: ""
+        alwaysCreDir: false
+        includeHostForCreDir: false
+      scheme: https
+    - hostname: bitbucket.org
+      provider: bitbucket-cloud
+      defaultBranch: master
+      clone:
+        homeDir: ""
+        alwaysCreDir: false
+        includeHostForCreDir: false
+      scheme: https
 ```
 
 You can customize the config per your requirements. Below is the config options supported in `~/.gitr.yaml`
 
-| config                                    |  default  | description                                                                                                                                   |
-|-------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| copyCloneLocationCdCmdToClipboard         |     false |  if this value is set, then gitr will add "cd <cloned-location>" text to your os clipboard. this is useful for quick navigation               |
-| scm.homeDir                               |     ""    |  if this value is set, then gitr clone will always clone the repos to this path, regardless of where you run `gitr clone` command from        |
-| scm.hosts.[].scheme                       |     ""    |  http scheme of scm system allowed: http or https                                                                                             |
-| scm.hosts.[].hostname                     |     ""    |  hostname of scm system                                                                                                                       |
-| scm.hosts.[].provider                     |     ""    |  provider of scm system. allowed values are github, gitlab and bitbucket                                                                      |
-| scm.hosts.[].defaultBranch                |     ""    |  this is the value of the default branch configured on the scm                                                                                |
-| scm.hosts.[].clone.homeDir                |     ""    |  if this is to non-empty string, then gitr clone will consider the value as the home directory while cloning the repos from this host         |
-| scm.hosts.[].clone.alwaysCreDir           |     false |  if this is set to true, then gitr clone will always create the directories present in the clone urlwhile cloning the repos from this host    |
-| scm.hosts.[].clone.includeHostForCreDir   |     false |  if this is set to true, then gitr clone will always prefix the hostname to the clone path                                                    |
+| config                                  | default | description                                                                                                                               |
+| --------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| copyCloneLocationCdCmdToClipboard       | false   | if this value is set, then gitr will add "cd <cloned-location>" text to your os clipboard. this is useful for quick navigation            |
+| scm.homeDir                             | ""      | if this value is set, then gitr clone will always clone the repos to this path, regardless of where you run `gitr clone` command from     |
+| scm.hosts.[].scheme                     | ""      | http scheme of scm system allowed: http or https                                                                                          |
+| scm.hosts.[].hostname                   | ""      | hostname of scm system                                                                                                                    |
+| scm.hosts.[].provider                   | ""      | provider of scm system. allowed values are github, gitlab and bitbucket                                                                   |
+| scm.hosts.[].defaultBranch              | ""      | this is the value of the default branch configured on the scm                                                                             |
+| scm.hosts.[].clone.homeDir              | ""      | if this is to non-empty string, then gitr clone will consider the value as the home directory while cloning the repos from this host      |
+| scm.hosts.[].clone.alwaysCreDir         | false   | if this is set to true, then gitr clone will always create the directories present in the clone urlwhile cloning the repos from this host |
+| scm.hosts.[].clone.includeHostForCreDir | false   | if this is set to true, then gitr clone will always prefix the hostname to the clone path                                                 |
 
 #### example config file
 
@@ -302,7 +302,7 @@ available for both web and clone features.
 
 > note: when `--dry` or `-d` flags are used, gitr will not open up the repo or clone the repo. it simply displays the info to the console that it would use in non-dry mode
 
-* `--dry` flag passed to `gitr web` command
+- `--dry` flag passed to `gitr web` command
 
 ```shell
 > gitr web -d
@@ -337,7 +337,7 @@ available for both web and clone features.
 
 ```
 
-* `--dry` flag passed to `gitr clone` command
+- `--dry` flag passed to `gitr clone` command
 
 ```shell
 > gitr clone git@github.com:swarupdonepudi/gitr.git --dry
