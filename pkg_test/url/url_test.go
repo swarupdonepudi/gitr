@@ -1,6 +1,7 @@
 package url_test
 
 import (
+	"github.com/plantoncloud/gitr/pkg/config"
 	"github.com/plantoncloud/gitr/pkg/url"
 	"testing"
 )
@@ -107,6 +108,46 @@ func TestIsGitRepoName(t *testing.T) {
 		for _, u := range repoNameTests {
 			if url.GetRepoName(u.repoPath) != u.repoName {
 				t.Errorf("expected %s but got %s for %s path", u.repoName, url.GetRepoName(u.repoPath), u.repoPath)
+			}
+		}
+	})
+}
+
+func TestGetRepoPath(t *testing.T) {
+	var githubTests = []struct {
+		url      string
+		host     string
+		expected string
+	}{
+		// Basic repository URLs
+		{"https://github.com/owner/repo", "github.com", "owner/repo"},
+		{"https://github.com/owner/repo.git", "github.com", "owner/repo"},
+		// Tree URLs (branch/directory browsing)
+		{"https://github.com/sarwarbeing-ai/Agentic_Design_Patterns/tree/main", "github.com", "sarwarbeing-ai/Agentic_Design_Patterns"},
+		{"https://github.com/owner/repo/tree/feature-branch", "github.com", "owner/repo"},
+		{"https://github.com/owner/repo/tree/main/src/pkg", "github.com", "owner/repo"},
+		// Blob URLs (file viewing)
+		{"https://github.com/owner/repo/blob/main/README.md", "github.com", "owner/repo"},
+		{"https://github.com/owner/repo/blob/v1.0.0/file.go", "github.com", "owner/repo"},
+		// Commits URLs
+		{"https://github.com/owner/repo/commits/main", "github.com", "owner/repo"},
+		// Pull request URLs
+		{"https://github.com/owner/repo/pull/123", "github.com", "owner/repo"},
+		// Issues URLs
+		{"https://github.com/owner/repo/issues/456", "github.com", "owner/repo"},
+		// Compare URLs
+		{"https://github.com/owner/repo/compare/main...feature", "github.com", "owner/repo"},
+	}
+
+	t.Run("GitHub URL patterns should extract correct repo path", func(t *testing.T) {
+		for _, tc := range githubTests {
+			result, err := url.GetRepoPath(tc.url, tc.host, config.GitHub)
+			if err != nil {
+				t.Errorf("unexpected error for url %s: %v", tc.url, err)
+				continue
+			}
+			if result != tc.expected {
+				t.Errorf("expected %s but got %s for url %s", tc.expected, result, tc.url)
 			}
 		}
 	})

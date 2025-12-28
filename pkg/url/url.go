@@ -59,11 +59,15 @@ func GetRepoPath(url, host string, p config.ScmProvider) (string, error) {
 			return url[strings.Index(url, host)+1+len(host):], nil
 		}
 	case config.GitHub:
-		if strings.Contains(url, "/blob/") {
-			return url[strings.Index(url, host)+1+len(host) : strings.Index(url, "/blob/")], nil
-		} else {
-			return url[strings.Index(url, host)+1+len(host):], nil
+		repoPath := url[strings.Index(url, host)+1+len(host):]
+		// GitHub web URL patterns that should be stripped to extract owner/repo
+		githubPatterns := []string{"/tree/", "/blob/", "/commits/", "/pull/", "/issues/", "/compare/"}
+		for _, pattern := range githubPatterns {
+			if idx := strings.Index(repoPath, pattern); idx != -1 {
+				return repoPath[:idx], nil
+			}
 		}
+		return repoPath, nil
 	default:
 		return "", errors.Errorf("provider %s not supported for browser urls", p)
 	}
