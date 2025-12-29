@@ -50,6 +50,9 @@ homebrew_casks:
     description: "gitr: git rapid - save time by opening git repos on web right from the command line"
     binaries:
       - gitr
+    hooks:
+      post_install: |
+        system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/gitr"]
     caveats: |
       Installation Complete!
 
