@@ -1,6 +1,6 @@
 # ── project metadata ────────────────────────────────────────────────────────────
 name        := gitr
-pkg         := github.com/plantoncloud/gitr
+pkg         := github.com/swarupdonepudi/gitr
 build_dir   := dist
 LDFLAGS     := -ldflags "-X $(pkg)/cmd/gitr/root/version.VersionLabel=$$(git describe --tags --always --dirty)"
 
@@ -24,6 +24,17 @@ test: vet      ## run tests with race detector
 
 clean:         ## remove build artifacts
 	rm -rf $(build_dir)
+
+# ── build ─────────────────────────────────────────────────────────────────────
+.PHONY: build build-cli build-site
+build: build-cli build-site ## build CLI and website
+
+build-cli: deps ## build the Go CLI binary
+	$(build_cmd) -o $(build_dir)/$(name) ./cmd/$(name)
+
+build-site: ## build the website
+	cd site && NODE_NO_WARNINGS=1 yarn install
+	cd site && NODE_NO_WARNINGS=1 yarn build
 
 # ── local utility ──────────────────────────────────────────────────────────────
 .PHONY: snapshot local
@@ -51,10 +62,10 @@ endif
 
 .PHONY: develop-site
 develop-site:
-	cd site && npm install --no-audit --no-fund
-	cd site && npm run dev
+	cd site && NODE_NO_WARNINGS=1 yarn install
+	cd site && NODE_NO_WARNINGS=1 yarn dev
 
 .PHONY: preview-site
 preview-site:
-	cd site && npm install --no-audit --no-fund
-	cd site && npm run build:serve
+	cd site && NODE_NO_WARNINGS=1 yarn install
+	cd site && NODE_NO_WARNINGS=1 yarn build:serve

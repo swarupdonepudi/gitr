@@ -92,7 +92,7 @@ export default function Home() {
 
             <div className="flex items-center gap-4">
               <Button variant="ghost" size="sm" asChild>
-                <a href="https://github.com/plantoncloud/gitr" target="_blank" rel="noopener noreferrer">
+                <a href="https://github.com/swarupdonepudi/gitr" target="_blank" rel="noopener noreferrer">
                   <Github className="w-4 h-4 mr-2" />
                   GitHub
                 </a>

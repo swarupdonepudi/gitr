@@ -3,13 +3,13 @@ package web
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	gitrgit "github.com/plantoncloud/gitr/pkg/git"
-	"github.com/plantoncloud/gitr/pkg/url"
+	gitrgit "github.com/swarupdonepudi/gitr/pkg/git"
+	"github.com/swarupdonepudi/gitr/pkg/url"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/plantoncloud/gitr/pkg/config"
+	"github.com/swarupdonepudi/gitr/pkg/config"
 )
 
 // GetFileURL returns the browser URL for a single file in the repo.

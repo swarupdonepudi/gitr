@@ -1,7 +1,7 @@
 package config_test
 
 import (
-	"github.com/plantoncloud/gitr/pkg/config"
+	"github.com/swarupdonepudi/gitr/pkg/config"
 	"testing"
 )
 

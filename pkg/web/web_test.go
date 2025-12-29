@@ -1,7 +1,7 @@
 package web
 
 import (
-	"github.com/plantoncloud/gitr/pkg/config"
+	"github.com/swarupdonepudi/gitr/pkg/config"
 	"testing"
 )
 
@@ -12,8 +12,8 @@ func TestRemUrls(t *testing.T) {
 		branch      string
 		expectedUrl string
 	}{
-		{config.GitHub, "https://github.com/plantoncloud/gitr", "master", "https://github.com/plantoncloud/gitr/tree/master"},
-		{config.GitHub, "https://github.com/plantoncloud/gitr", "feat/custom-branch", "https://github.com/plantoncloud/gitr/tree/feat/custom-branch"},
+		{config.GitHub, "https://github.com/swarupdonepudi/gitr", "master", "https://github.com/swarupdonepudi/gitr/tree/master"},
+		{config.GitHub, "https://github.com/swarupdonepudi/gitr", "feat/custom-branch", "https://github.com/swarupdonepudi/gitr/tree/feat/custom-branch"},
 		{config.BitBucketCloud, "https://bitbucket.org/ramamohanraju/demo-project", "master", "https://bitbucket.org/ramamohanraju/demo-project/branch/master"},
 	}
 	t.Run("validate remote urls", func(t *testing.T) {
@@ -32,8 +32,8 @@ func TestPrsUrls(t *testing.T) {
 		webUrl      string
 		expectedUrl string
 	}{
-		{config.GitHub, "https://github.com/plantoncloud/gitr", "https://github.com/plantoncloud/gitr/pulls"},
-		{config.GitHub, "https://github.com/plantoncloud/gitr", "https://github.com/plantoncloud/gitr/pulls"},
+		{config.GitHub, "https://github.com/swarupdonepudi/gitr", "https://github.com/swarupdonepudi/gitr/pulls"},
+		{config.GitHub, "https://github.com/swarupdonepudi/gitr", "https://github.com/swarupdonepudi/gitr/pulls"},
 		{config.GitLab, "https://gitlab.com/gitlab-org/gitlab-foss", "https://gitlab.com/gitlab-org/gitlab-foss/-/merge_requests"},
 		{config.GitLab, "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api", "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api/-/merge_requests"},
 	}
@@ -53,7 +53,7 @@ func TestIssuesUrls(t *testing.T) {
 		webUrl      string
 		expectedUrl string
 	}{
-		{config.GitHub, "https://github.com/plantoncloud/gitr", "https://github.com/plantoncloud/gitr/issues"},
+		{config.GitHub, "https://github.com/swarupdonepudi/gitr", "https://github.com/swarupdonepudi/gitr/issues"},
 		{config.GitLab, "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api", "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api/-/issues"},
 	}
 	t.Run("validate issues urls", func(t *testing.T) {
@@ -72,7 +72,7 @@ func TestTagsUrls(t *testing.T) {
 		webUrl      string
 		expectedUrl string
 	}{
-		{config.GitHub, "https://github.com/plantoncloud/gitr", "https://github.com/plantoncloud/gitr/tags"},
+		{config.GitHub, "https://github.com/swarupdonepudi/gitr", "https://github.com/swarupdonepudi/gitr/tags"},
 		{config.GitLab, "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api", "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api/-/tags"},
 	}
 	t.Run("validate tags urls", func(t *testing.T) {
@@ -91,7 +91,7 @@ func TestReleasesUrls(t *testing.T) {
 		webUrl      string
 		expectedUrl string
 	}{
-		{config.GitHub, "https://github.com/plantoncloud/gitr", "https://github.com/plantoncloud/gitr/releases"},
+		{config.GitHub, "https://github.com/swarupdonepudi/gitr", "https://github.com/swarupdonepudi/gitr/releases"},
 		{config.GitLab, "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api", "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api/-/releases"},
 	}
 	t.Run("validate releases urls", func(t *testing.T) {
@@ -110,7 +110,7 @@ func TestPipelinesUrls(t *testing.T) {
 		webUrl      string
 		expectedUrl string
 	}{
-		{config.GitHub, "https://github.com/plantoncloud/gitr", "https://github.com/plantoncloud/gitr/actions"},
+		{config.GitHub, "https://github.com/swarupdonepudi/gitr", "https://github.com/swarupdonepudi/gitr/actions"},
 		{config.GitLab, "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api", "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api/-/pipelines"},
 	}
 	t.Run("validate pipelines urls", func(t *testing.T) {
@@ -129,7 +129,7 @@ func TestBranchesUrls(t *testing.T) {
 		webUrl      string
 		expectedUrl string
 	}{
-		{config.GitHub, "https://github.com/plantoncloud/gitr", "https://github.com/plantoncloud/gitr/branches"},
+		{config.GitHub, "https://github.com/swarupdonepudi/gitr", "https://github.com/swarupdonepudi/gitr/branches"},
 		{config.GitLab, "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api", "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api/-/branches"},
 	}
 	t.Run("validate branches urls", func(t *testing.T) {
@@ -149,8 +149,8 @@ func TestCommitsUrls(t *testing.T) {
 		branch      string
 		expectedUrl string
 	}{
-		{config.GitHub, "https://github.com/plantoncloud/gitr", "master", "https://github.com/plantoncloud/gitr/commits/master"},
-		{config.GitHub, "https://github.com/plantoncloud/gitr", "feat/custom", "https://github.com/plantoncloud/gitr/commits/feat/custom"},
+		{config.GitHub, "https://github.com/swarupdonepudi/gitr", "master", "https://github.com/swarupdonepudi/gitr/commits/master"},
+		{config.GitHub, "https://github.com/swarupdonepudi/gitr", "feat/custom", "https://github.com/swarupdonepudi/gitr/commits/feat/custom"},
 		{config.GitLab, "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api", "main", "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api/-/commits/main"},
 		{config.GitLab, "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api", "feat/custom", "https://gitlab.com/gitlab-org/gitlab-foss/gitlab-foss-api/-/commits/feat/custom"},
 	}

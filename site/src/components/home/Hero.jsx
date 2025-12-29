@@ -6,7 +6,7 @@ import { Terminal, Copy, Check, Github, BookOpen, Star, GitBranch, Zap, Shield }
 export default function Hero() {
   const [copied, setCopied] = useState(false);
 
-  const installCommand = 'brew install plantoncloud/tap/gitr';
+  const installCommand = 'brew install swarupdonepudi/tap/gitr';
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(installCommand);
@@ -96,7 +96,7 @@ export default function Hero() {
               className="border-gray-600 text-gray-300 hover:bg-gray-800 px-8 py-3 text-lg"
               asChild
             >
-              <a href="https://github.com/plantoncloud/gitr" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/swarupdonepudi/gitr" target="_blank" rel="noopener noreferrer">
                 <Github className="w-5 h-5 mr-2" />
                 View on GitHub
               </a>

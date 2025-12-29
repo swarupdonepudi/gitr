@@ -225,7 +225,7 @@ git commit -m "<type>(<scope>): <subject>" \
 
 ## Important Notes
 
-- **Always run in gitr workspace**: `/Users/suresh/scm/github.com/plantoncloud/gitr`
+- **Always run in gitr workspace**: `~/scm/github.com/swarupdonepudi/gitr`
 - **Don't commit without reviewing**: Show the proposed commit message to the user before executing if the changes are significant
 - **Stage selectively if needed**: If only some changes should be committed, stage specific files instead of `git add -A`
 - **Don't skip hooks**: Never use `--no-verify` unless explicitly requested

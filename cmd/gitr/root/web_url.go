@@ -4,7 +4,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	"github.com/plantoncloud/gitr/pkg/web"
+	"github.com/swarupdonepudi/gitr/pkg/web"
 )
 
 // WebUrlCmd prints the browser URL for the given file inside the current Git repo.

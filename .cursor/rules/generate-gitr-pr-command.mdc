@@ -25,7 +25,7 @@ References: `@generate-gitr-pr-info`
 
 **Step 1: Create PR Description File**
 
-Use the `write` tool to create `/Users/suresh/scm/github.com/plantoncloud/gitr/.cursor/workspace/pr-description-<timestamp>.md` with the PR description content.
+Use the `write` tool to create `~/scm/github.com/swarupdonepudi/gitr/.cursor/workspace/pr-description-<timestamp>.md` with the PR description content.
 
 **Step 2: Execution Command**
 
@@ -35,7 +35,7 @@ Output a bash code block:
 # Repository: gitr
 # PR Title: <title>
 
-cd /Users/suresh/scm/github.com/plantoncloud/gitr && \
+cd ~/scm/github.com/swarupdonepudi/gitr && \
 git checkout -b "<branch-name>" 2>/dev/null || git checkout "<branch-name>" && \
 git add -A && \
 git commit -m "<title>" && \
@@ -50,7 +50,7 @@ gh pr create \
 
 ```bash
 # Cleanup: Run after PR is created
-rm -f /Users/suresh/scm/github.com/plantoncloud/gitr/.cursor/workspace/pr-description-*.md
+rm -f ~/scm/github.com/swarupdonepudi/gitr/.cursor/workspace/pr-description-*.md
 ```
 
 ## Branch naming heuristic
@@ -109,7 +109,7 @@ Use the same sections as `@generate-gitr-pr-info`:
 
 ## Example output
 
-**PR Description File: `/Users/suresh/scm/github.com/plantoncloud/gitr/.cursor/workspace/pr-description-1731589530.md`** ✓ Created
+**PR Description File: `~/scm/github.com/swarupdonepudi/gitr/.cursor/workspace/pr-description-1731589530.md`** ✓ Created
 
 ---
 
@@ -117,7 +117,7 @@ Use the same sections as `@generate-gitr-pr-info`:
 # Repository: gitr
 # PR Title: feat(pkg/git): add remote branch validation with fallback to default branch
 
-cd /Users/suresh/scm/github.com/plantoncloud/gitr && \
+cd ~/scm/github.com/swarupdonepudi/gitr && \
 git checkout -b "feat/pkg-git-add-remote-branch-validation-with-fallback" 2>/dev/null || git checkout "feat/pkg-git-add-remote-branch-validation-with-fallback" && \
 git add -A && \
 git commit -m "feat(pkg/git): add remote branch validation with fallback to default branch" && \
@@ -132,14 +132,14 @@ gh pr create \
 
 ```bash
 # Cleanup: Run after PR is created
-rm -f /Users/suresh/scm/github.com/plantoncloud/gitr/.cursor/workspace/pr-description-*.md
+rm -f ~/scm/github.com/swarupdonepudi/gitr/.cursor/workspace/pr-description-*.md
 ```
 
 ## Command breakdown
 
 The command does the following:
 
-1. **Change to gitr directory**: `cd /Users/suresh/scm/github.com/plantoncloud/gitr`
+1. **Change to gitr directory**: `cd ~/scm/github.com/swarupdonepudi/gitr`
 2. **Create/switch to branch**: `git checkout -b "<branch-name>"` (or switch if exists)
 3. **Stage all changes**: `git add -A`
 4. **Commit with message**: `git commit -m "<title>"`
@@ -174,7 +174,7 @@ You can append these to the `gh pr create` command:
 ## Example with options
 
 ```bash
-cd /Users/suresh/scm/github.com/plantoncloud/gitr && \
+cd ~/scm/github.com/swarupdonepudi/gitr && \
 git checkout -b "feat/pkg-git-add-remote-branch-validation" 2>/dev/null || git checkout "feat/pkg-git-add-remote-branch-validation" && \
 git add -A && \
 git commit -m "feat(pkg/git): add remote branch validation" && \

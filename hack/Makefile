@@ -1,4 +1,4 @@
-pkg=github.com/plantoncloud/gitr
+pkg=github.com/swarupdonepudi/gitr
 LDFLAGS=-ldflags "-X ${pkg}/pkg/version.Version=${v}"
 build_cmd=go build -v ${LDFLAGS}
 
@@ -30,8 +30,8 @@ setup-tests:
 	mv pkg/git/git_test_data/r3-with-remote-custom-branch/.git-temp pkg/git/git_test_data/r3-with-remote-custom-branch/.git
 .PHONY: execute-tests
 execute-tests:
-	go test -v -coverpkg github.com/plantoncloud/gitr/internal/..  -cover ./... -coverprofile=internal.cov || true
-	go test -v -coverpkg github.com/plantoncloud/gitr/pkg/...  -cover ./... -coverprofile=pkg.cov || true
+	go test -v -coverpkg github.com/swarupdonepudi/gitr/internal/..  -cover ./... -coverprofile=internal.cov || true
+	go test -v -coverpkg github.com/swarupdonepudi/gitr/pkg/...  -cover ./... -coverprofile=pkg.cov || true
 .PHONY: cleanup-tests
 cleanup-tests:
 	mv pkg/git/git_test_data/r1-no-remote/.git pkg/git/git_test_data/r1-no-remote/.git-temp

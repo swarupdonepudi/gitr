@@ -2,9 +2,9 @@ package url
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/gitr/pkg/config"
 	log "github.com/sirupsen/logrus"
 	"github.com/skratchdot/open-golang/open"
+	"github.com/swarupdonepudi/gitr/pkg/config"
 	"regexp"
 	"strings"
 )

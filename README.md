@@ -47,10 +47,10 @@ knowledge that is built into it to smartly navigate you to the right web page of
 ### install
 
 `gitr` can be easily installed on mac using brew. While it can also be installed on linux, windows using
-the [binary](https://github.com/plantoncloud/gitr/releases), it has not been tested on those platforms.
+the [binary](https://github.com/swarupdonepudi/gitr/releases), it has not been tested on those platforms.
 
 ```
-brew tap plantoncloud/homebrew-tap
+brew tap swarupdonepudi/homebrew-tap
 brew install gitr
 ```
 
@@ -320,19 +320,19 @@ available for both web and clone features.
 +---------------+----------------------------------------------------+
 | branch        | master                                             |
 +---------------+----------------------------------------------------+
-| url-web       | https://github.com/plantoncloud/gitr             |
+| url-web       | https://github.com/swarupdonepudi/gitr             |
 +---------------+----------------------------------------------------+
-| url-remote    | https://github.com/plantoncloud/gitr/tree/master |
+| url-remote    | https://github.com/swarupdonepudi/gitr/tree/master |
 +---------------+----------------------------------------------------+
 | url-commits   | swarupdonepudi/gitr/commits/master                 |
 +---------------+----------------------------------------------------+
-| url-branches  | https://github.com/plantoncloud/gitr/branches    |
+| url-branches  | https://github.com/swarupdonepudi/gitr/branches    |
 +---------------+----------------------------------------------------+
-| url-tags      | https://github.com/plantoncloud/gitr/tags        |
+| url-tags      | https://github.com/swarupdonepudi/gitr/tags        |
 +---------------+----------------------------------------------------+
-| url-releases  | https://github.com/plantoncloud/gitr/releases    |
+| url-releases  | https://github.com/swarupdonepudi/gitr/releases    |
 +---------------+----------------------------------------------------+
-| url-pipelines | https://github.com/plantoncloud/gitr/actions     |
+| url-pipelines | https://github.com/swarupdonepudi/gitr/actions     |
 +---------------+----------------------------------------------------+
 
 ```
@@ -353,13 +353,13 @@ available for both web and clone features.
 +------------+---------------------------------------------------+
 | ssh-url    | git@github.com:swarupdonepudi/gitr.git            |
 +------------+---------------------------------------------------+
-| http-url   | https://github.com/plantoncloud/gitr.git        |
+| http-url   | https://github.com/swarupdonepudi/gitr.git        |
 +------------+---------------------------------------------------+
 | create-dir | true                                              |
 +------------+---------------------------------------------------+
 | scm-home   | /Users/swarupd/scm                                |
 +------------+---------------------------------------------------+
-| clone-path | /Users/swarupd/scm/github.com/plantoncloud/gitr |
+| clone-path | /Users/swarupd/scm/github.com/swarupdonepudi/gitr |
 +------------+---------------------------------------------------+
 
 ```
@@ -387,7 +387,7 @@ alias branches="gitr branches "
 
 ```
 brew uninstall gitr
-brew untap plantoncloud/homebrew-tap
+brew untap swarupdonepudi/homebrew-tap
 ```
 
 ### contribute

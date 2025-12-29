@@ -62,10 +62,10 @@ func DoesBranchExistOnRemote(r *git.Repository, branchName string) bool {
 	}
 
 	remoteName := remotes[0].Config().Name
-	
+
 	// Check for remote-tracking branch (e.g., refs/remotes/origin/branch-name)
 	remoteTrackingRef := "refs/remotes/" + remoteName + "/" + branchName
-	
+
 	refs, err := r.References()
 	if err != nil {
 		log.Debugf("failed to get references: %v", err)
@@ -97,7 +97,7 @@ func GetDefaultBranch(r *git.Repository) (string, error) {
 
 	// Try to get the remote HEAD reference (e.g., refs/remotes/origin/HEAD)
 	remoteHeadRef := "refs/remotes/" + remoteName + "/HEAD"
-	
+
 	ref, err := r.Reference(plumbing.ReferenceName(remoteHeadRef), true)
 	if err == nil {
 		// The reference was found, extract the branch name
@@ -106,7 +106,7 @@ func GetDefaultBranch(r *git.Repository) (string, error) {
 		if ref.Type() == plumbing.SymbolicReference {
 			targetRef = ref.Target().String()
 		}
-		
+
 		// Extract branch name from refs/remotes/origin/main
 		defaultBranch := strings.TrimPrefix(targetRef, "refs/remotes/"+remoteName+"/")
 		if defaultBranch != "" && defaultBranch != targetRef {
