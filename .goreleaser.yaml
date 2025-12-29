@@ -40,17 +40,16 @@ release:
     owner: swarupdonepudi
     name: gitr
 
-brews:
+homebrew_casks:
   - name: gitr
     repository:
       owner: swarupdonepudi
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
-    directory: Formula
     homepage: https://github.com/swarupdonepudi/gitr
     description: "gitr: git rapid - save time by opening git repos on web right from the command line"
-    install: |
-      bin.install "gitr"
+    binaries:
+      - gitr
     caveats: |
       Installation Complete!
 
