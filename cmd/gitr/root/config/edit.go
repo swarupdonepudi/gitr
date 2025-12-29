@@ -1,13 +1,14 @@
 package config
 
 import (
-	"github.com/leftbin/go-util/pkg/file"
-	"github.com/leftbin/go-util/pkg/shell"
-	log "github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
 	"os"
 	"os/exec"
 	"path/filepath"
+
+	"github.com/leftbin/go-util/pkg/file"
+	"github.com/leftbin/go-util/pkg/shell"
+	"github.com/spf13/cobra"
+	"github.com/swarupdonepudi/gitr/pkg/ui"
 )
 
 var Edit = &cobra.Command{
@@ -19,13 +20,17 @@ var Edit = &cobra.Command{
 func editHandler(cmd *cobra.Command, args []string) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
-		log.Fatalf("failed to get home dir. err: %v", err)
+		ui.GenericError("System Error", "Failed to determine home directory", err)
 	}
 	gitrConfigPath := filepath.Join(homeDir, ".gitr.yaml")
 	if !file.IsFileExists(gitrConfigPath) {
-		log.Fatalf("config file %s not found. run 'gitr config init' to create one", gitrConfigPath)
+		ui.Error(
+			"Configuration Not Found",
+			ui.Path(gitrConfigPath)+" does not exist.",
+			"Run "+ui.Cmd("gitr config init")+" to create one",
+		)
 	}
 	if err := shell.RunCmd(exec.Command("code", gitrConfigPath)); err != nil {
-		log.Fatalf("failed to open gitr config. err: %v", err)
+		ui.FailedToOpenEditor("code", err)
 	}
 }

@@ -2,13 +2,15 @@ package gitr
 
 import (
 	"fmt"
+	"os"
+	"runtime"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/swarupdonepudi/gitr/cmd/gitr/root"
 	"github.com/swarupdonepudi/gitr/internal/cli"
 	"github.com/swarupdonepudi/gitr/pkg/config"
-	"os"
-	"runtime"
+	"github.com/swarupdonepudi/gitr/pkg/ui"
 )
 
 var debug bool
@@ -17,8 +19,21 @@ const HomebrewAppleSiliconBinPath = "/opt/homebrew/bin"
 
 var rootCmd = &cobra.Command{
 	Use:   "gitr",
-	Short: "git rapid - the missing link b/w git cli & scm providers",
-	Long:  "save time(a ton) by opening git repos on web browser right from the command line",
+	Short: "Clone to organized paths. Open PRs, pipelines, branches instantly.",
+	Long: `gitr - Your missing git productivity tool
+
+Clone repos to organized, deterministic paths and navigate to any web page 
+(PRs, pipelines, issues, branches) instantly from your terminal.
+
+No more scattered repos. No more browser tab hunting. One CLI, zero friction.
+
+Examples:
+  gitr clone https://github.com/owner/repo    # → ~/scm/github.com/owner/repo
+  gitr prs                                    # Open PRs in browser
+  gitr pipe                                   # Open pipelines/actions
+  gitr web                                    # Open repo homepage
+
+Learn more: https://swarupdonepudi.github.io/gitr`,
 }
 
 func init() {
@@ -48,17 +63,18 @@ func init() {
 		if runtime.GOARCH == "arm64" {
 			pathEnvVal := os.Getenv("PATH")
 			if err := os.Setenv("PATH", fmt.Sprintf("%s:%s", pathEnvVal, HomebrewAppleSiliconBinPath)); err != nil {
-				log.Fatalf("failed to set PATH env. err: %v", err)
+				ui.GenericError("Environment Error", "Failed to configure PATH for Apple Silicon", err)
 			}
 		}
 	})
 	if err := config.EnsureInitialConfig(); err != nil {
-		log.Fatalf("failed to initialize config. err %v", err)
+		ui.GenericError("Configuration Error", "Failed to initialize gitr configuration", err)
 	}
 }
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		log.Fatalf("failed to run command. err %v", err)
+		// Cobra already prints errors, so we just exit
+		os.Exit(1)
 	}
 }

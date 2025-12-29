@@ -1,6 +1,6 @@
 package cli
 
-import log "github.com/sirupsen/logrus"
+import "github.com/swarupdonepudi/gitr/pkg/ui"
 
 type Flag string
 
@@ -13,6 +13,6 @@ const (
 
 func HandleFlagErr(err error, flag Flag) {
 	if err != nil {
-		log.Fatalf("error parsing %s flag. err %v", flag, err)
+		ui.FlagParseError(string(flag), err)
 	}
 }

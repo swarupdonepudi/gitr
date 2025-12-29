@@ -1,8 +1,8 @@
 package root
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
+	"github.com/swarupdonepudi/gitr/pkg/ui"
 )
 
 var VersionLabel = "dev"
@@ -15,5 +15,5 @@ var Version = &cobra.Command{
 }
 
 func versionHandler(cmd *cobra.Command, args []string) {
-	fmt.Println(fmt.Sprintf("version %s", VersionLabel))
+	ui.Version(VersionLabel)
 }

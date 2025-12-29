@@ -1,12 +1,13 @@
 package git
 
 import (
+	"path/filepath"
+	"strings"
+
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"path/filepath"
-	"strings"
 )
 
 // GetGitRepo returns a git repository by walking the file system upwards from the provided directory
@@ -31,7 +32,7 @@ func GetGitRepo(folder string) (*git.Repository, error) {
 func GetGitRemoteUrl(r *git.Repository) (string, error) {
 	remotes, err := r.Remotes()
 	if err != nil {
-		log.Fatalf("failed to get remote url from git repo. err: %v", err)
+		return "", errors.Wrap(err, "failed to get remotes from git repo")
 	}
 	if len(remotes) == 0 {
 		return "", errors.New("no remotes found")
