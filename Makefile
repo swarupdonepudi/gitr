@@ -46,16 +46,42 @@ local: deps fmt vet ## build and install binary to ~/bin
 	install -m 0755 $(build_dir)/$(name) $(HOME)/bin/$(name)
 
 # ── release tagging ────────────────────────────────────────────────────────────
-.PHONY: release build-check
+.PHONY: release build-check next-version
 build-check:   ## quick compile to verify build
 	go build -o /dev/null .
 
-release: test build-check ## tag & push if everything passes
-ifndef version
-	$(error version is not set. Use: make release version=vX.Y.Z)
-endif
-	git tag -a $(version) -m "$(version)"
-	git push origin $(version)
+# bump: major, minor, or patch (default)
+bump ?= patch
+
+next-version:  ## show what the next version would be
+	@latest=$$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"); \
+	major=$$(echo $$latest | sed 's/v//' | cut -d. -f1); \
+	minor=$$(echo $$latest | sed 's/v//' | cut -d. -f2); \
+	patch=$$(echo $$latest | sed 's/v//' | cut -d. -f3); \
+	case "$(bump)" in \
+		major) major=$$((major + 1)); minor=0; patch=0 ;; \
+		minor) minor=$$((minor + 1)); patch=0 ;; \
+		patch) patch=$$((patch + 1)) ;; \
+		*) echo "Invalid bump type: $(bump). Use major, minor, or patch"; exit 1 ;; \
+	esac; \
+	echo "v$$major.$$minor.$$patch"
+
+release: test build-check ## auto-bump version, tag & push (bump=major|minor|patch, default: patch)
+	@latest=$$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"); \
+	major=$$(echo $$latest | sed 's/v//' | cut -d. -f1); \
+	minor=$$(echo $$latest | sed 's/v//' | cut -d. -f2); \
+	patch=$$(echo $$latest | sed 's/v//' | cut -d. -f3); \
+	case "$(bump)" in \
+		major) major=$$((major + 1)); minor=0; patch=0 ;; \
+		minor) minor=$$((minor + 1)); patch=0 ;; \
+		patch) patch=$$((patch + 1)) ;; \
+		*) echo "Invalid bump type: $(bump). Use major, minor, or patch"; exit 1 ;; \
+	esac; \
+	version="v$$major.$$minor.$$patch"; \
+	echo "Current version: $$latest"; \
+	echo "Releasing: $$version ($(bump) bump)"; \
+	git tag -a $$version -m "$$version"; \
+	git push origin $$version
 
 # ── default target ─────────────────────────────────────────────────────────────
 .DEFAULT_GOAL := test
