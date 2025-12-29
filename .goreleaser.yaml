@@ -9,12 +9,14 @@ before:
 builds:
   - id: gitr
     main: .
+    binary: gitr
     ldflags:
-      - -s -w -X github.com/plantoncloud/gitr/cmd/gitr/root/version.VersionLabel={{.Version}}
+      - -s -w -X github.com/swarupdonepudi/gitr/cmd/gitr/root.VersionLabel={{.Version}}
     env:
       - CGO_ENABLED=0
     goos:
       - darwin
+      - linux
       - windows
     goarch:
       - amd64
@@ -22,28 +24,50 @@ builds:
 
 archives:
   - id: default
-    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
-    format_overrides:
-      - goos: windows
-        format: zip
-    files:
-      - LICENSE*
+    name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}"
+    format: binary
 
 checksum:
   name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
 
 release:
   github:
-    owner: plantoncloud
+    owner: swarupdonepudi
     name: gitr
 
 brews:
   - name: gitr
     repository:
-      owner: plantoncloud
+      owner: swarupdonepudi
       name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     directory: Formula
-    homepage: https://github.com/plantoncloud/gitr
-    description: "git rapid – open Git repos on the web from the CLI"
+    homepage: https://github.com/swarupdonepudi/gitr
+    description: "gitr: git rapid - save time by opening git repos on web right from the command line"
     install: |
-      bin.install "{{ .ProjectName }}"
+      bin.install "gitr"
+    caveats: |
+      Installation Complete!
+
+      gitr helps you open git repositories in your browser instantly.
+
+      Quick Start
+
+      1. Navigate to any git repository:
+         cd ~/your-project
+
+      2. Open the repo in your browser:
+         gitr
+
+      3. Open a specific page:
+         gitr pulls     # Pull requests
+         gitr issues    # Issues
+         gitr actions   # GitHub Actions
+
+      4. Clone any repo with a short URL:
+         gitr clone gh/owner/repo
+
+      For more commands, run:
+         gitr --help
+
+      Documentation: https://gitr.dev
