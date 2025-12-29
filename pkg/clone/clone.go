@@ -2,6 +2,11 @@ package clone
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
+	"os/exec"
+	"path/filepath"
+
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	ssh2 "github.com/go-git/go-git/v5/plumbing/transport/ssh"
@@ -12,12 +17,9 @@ import (
 	log "github.com/sirupsen/logrus"
 	intssh "github.com/swarupdonepudi/gitr/internal/ssh"
 	"github.com/swarupdonepudi/gitr/pkg/config"
+	"github.com/swarupdonepudi/gitr/pkg/ui"
 	"github.com/swarupdonepudi/gitr/pkg/url"
 	"golang.org/x/crypto/ssh"
-	"io/ioutil"
-	"os"
-	"os/exec"
-	"path/filepath"
 )
 
 func Clone(cfg *config.GitrConfig, inputUrl string, token string, creDir, dry bool) (repoLocation string, err error) {
@@ -42,7 +44,7 @@ func Clone(cfg *config.GitrConfig, inputUrl string, token string, creDir, dry bo
 	}
 	if file.IsDirExists(repoLocation) {
 		if file.IsDirExists(filepath.Join(repoLocation, ".git")) {
-			log.Info("repo already exists. skipping cloning...")
+			ui.RepoAlreadyExists(repoLocation)
 			return repoLocation, nil
 		}
 		if err := os.RemoveAll(repoLocation); err != nil {
@@ -72,13 +74,13 @@ func Clone(cfg *config.GitrConfig, inputUrl string, token string, creDir, dry bo
 
 	}
 	if s.Provider == config.BitBucketDatacenter || s.Provider == config.BitBucketCloud {
-		log.Warn("gitr does not support clone using browser urls for bitbucket-datacenter & bitbucket.org")
+		ui.Warn("Unsupported URL Format", "gitr does not support clone using browser URLs for BitBucket. Please use SSH or HTTPS clone URLs instead.")
 		return "", nil
 	}
 	sshCloneUrl := GetSshCloneUrl(s.Hostname, repoPath)
 	log.Debugf("cloning using ssh url %s", sshCloneUrl)
 	if err := sshClone(sshCloneUrl, repoLocation); err != nil {
-		log.Warn("failed to clone repo using ssh. trying http clone...")
+		ui.Warn("SSH Clone Failed", "Trying HTTP clone instead...")
 		httpCloneUrl := GetHttpCloneUrl(s.Hostname, repoPath, s.Scheme)
 		if err := httpClone(httpCloneUrl, repoLocation); err != nil {
 			return "", errors.Wrap(err, "error cloning the repo using http")
@@ -90,7 +92,7 @@ func Clone(cfg *config.GitrConfig, inputUrl string, token string, creDir, dry bo
 func GetClonePath(cfg *config.GitrConfig, inputUrl string, creDir bool) (string, error) {
 	s, err := config.GetScmHost(cfg, url.GetHostname(inputUrl))
 	if err != nil {
-		log.Fatalf("failed to get scm host. err: %v", err)
+		return "", errors.Wrapf(err, "failed to get scm host for %s", url.GetHostname(inputUrl))
 	}
 	repoPath, err := url.GetRepoPath(inputUrl, s.Hostname, s.Provider)
 	if err != nil {

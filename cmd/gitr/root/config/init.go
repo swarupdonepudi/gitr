@@ -1,9 +1,9 @@
 package config
 
 import (
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/swarupdonepudi/gitr/pkg/config"
+	"github.com/swarupdonepudi/gitr/pkg/ui"
 )
 
 var Init = &cobra.Command{
@@ -14,7 +14,7 @@ var Init = &cobra.Command{
 
 func initHandler(cmd *cobra.Command, args []string) {
 	if err := config.EnsureInitialConfig(); err != nil {
-		log.Fatalf("%v", err)
+		ui.GenericError("Configuration Error", "Failed to initialize configuration", err)
 	}
-	log.Info("success!")
+	ui.ConfigInitSuccess()
 }

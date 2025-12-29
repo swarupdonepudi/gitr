@@ -1,9 +1,10 @@
 package root
 
 import (
-	log "github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
+	"fmt"
 
+	"github.com/spf13/cobra"
+	"github.com/swarupdonepudi/gitr/pkg/ui"
 	"github.com/swarupdonepudi/gitr/pkg/web"
 )
 
@@ -18,8 +19,8 @@ var WebUrlCmd = &cobra.Command{
 func webUrlCmdHandler(cmd *cobra.Command, args []string) {
 	url, err := web.FileURLFromPwd(args[0])
 	if err != nil {
-		log.Fatalf("error: %v\n", err)
+		ui.GenericError("Failed to Get Web URL", fmt.Sprintf("Could not generate web URL for '%s'", args[0]), err)
 		return
 	}
-	println(url)
+	fmt.Println(url)
 }

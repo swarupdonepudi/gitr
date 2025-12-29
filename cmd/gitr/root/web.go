@@ -1,14 +1,16 @@
 package root
 
 import (
-	log "github.com/sirupsen/logrus"
+	"fmt"
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/swarupdonepudi/gitr/internal/cli"
 	"github.com/swarupdonepudi/gitr/pkg/config"
 	"github.com/swarupdonepudi/gitr/pkg/git"
+	"github.com/swarupdonepudi/gitr/pkg/ui"
 	"github.com/swarupdonepudi/gitr/pkg/url"
 	"github.com/swarupdonepudi/gitr/pkg/web"
-	"os"
 )
 
 type WebCmdName string
@@ -83,40 +85,46 @@ var CommitsCmd = &cobra.Command{
 func webHandler(cmd *cobra.Command, args []string) {
 	dry, err := cmd.InheritedFlags().GetBool(string(cli.Dry))
 	cli.HandleFlagErr(err, cli.Dry)
+
 	pwd, err := os.Getwd()
 	if err != nil {
-		log.Fatalf("failed to get current dir. err: %v", err)
+		ui.GenericError("Failed to Get Directory", "Could not determine current working directory", err)
 	}
+
 	r, err := git.GetGitRepo(pwd)
 	if err != nil {
-		log.Fatalf("failed to get repo")
+		ui.NotInGitRepo()
 	}
+
 	remoteUrl, err := git.GetGitRemoteUrl(r)
 	if err != nil {
-		log.Fatalf("failed to get remote url")
+		ui.NoRemotesFound()
 	}
+
 	branch, err := git.GetGitBranch(r)
 	if err != nil {
-		log.Fatalf("failed to get git branch")
+		ui.FailedToGetBranch(err)
 	}
+
 	cfg, err := config.NewGitrConfig()
 	if err != nil {
-		log.Fatalf("failed to get gitr config. err: %v", err)
+		ui.ConfigError(err)
 	}
+
 	s, err := config.GetScmHost(cfg, url.GetHostname(remoteUrl))
 	if err != nil {
-		log.Fatalf("failed to get scm host for %s url. err: %v", remoteUrl, err)
+		ui.UnknownSCMHost(url.GetHostname(remoteUrl))
 	}
 
 	repoPath, err := url.GetRepoPath(remoteUrl, s.Hostname, s.Provider)
 	if err != nil {
-		log.Fatalf("failed to get repo path")
+		ui.GenericError("Failed to Parse Repository", "Could not parse repository path from URL", err)
 	}
 	repoName := url.GetRepoName(repoPath)
 	webUrl := web.GetWebUrl(s.Provider, s.Scheme, s.Hostname, repoPath)
 
 	if dry {
-		web.PrintGitrWebInfo(s.Provider, s.Hostname, remoteUrl, webUrl, repoPath, repoName, branch)
+		ui.WebInfo(string(s.Provider), s.Hostname, remoteUrl, webUrl, repoPath, repoName, branch)
 		return
 	}
 
@@ -141,16 +149,22 @@ func webHandler(cmd *cobra.Command, args []string) {
 		branchToOpen := branch
 		// Check if the current branch exists on the remote
 		if !git.DoesBranchExistOnRemote(r, branch) {
-			log.Warnf("Branch '%s' doesn't exist on remote. Opening default branch instead.", branch)
+			ui.Warn(
+				fmt.Sprintf("Branch '%s' not on remote", branch),
+				"Opening default branch instead.",
+			)
 			defaultBranch, err := git.GetDefaultBranch(r)
 			if err != nil {
-				log.Warnf("Unable to determine default branch: %v. Attempting to open '%s' anyway.", err, branch)
+				ui.Warn(
+					"Unable to determine default branch",
+					fmt.Sprintf("Attempting to open '%s' anyway.", branch),
+				)
 			} else {
 				branchToOpen = defaultBranch
 			}
 		}
 		url.OpenInBrowser(web.GetRemUrl(s.Provider, webUrl, branchToOpen))
 	default:
-		log.Fatal("unknown web command")
+		ui.Error("Unknown Command", fmt.Sprintf("The command '%s' is not recognized.", cmd.Name()))
 	}
 }

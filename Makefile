@@ -29,7 +29,7 @@ clean:         ## remove build artifacts
 .PHONY: build build-cli build-site
 build: build-cli build-site ## build CLI and website
 
-build-cli: deps ## build the Go CLI binary
+build-cli: deps fmt vet ## build the Go CLI binary
 	$(build_cmd) -o $(build_dir)/$(name) ./cmd/$(name)
 
 build-site: ## build the website
@@ -41,8 +41,9 @@ build-site: ## build the website
 snapshot: deps ## build a local snapshot using GoReleaser
 	goreleaser release --snapshot --clean --skip=publish
 
-local: snapshot ## copy binary to ~/bin for quick use
-	install -m 0755 $(build_dir)/gitr_$(shell uname -s | tr '[:upper:]' '[:lower:]')_$(shell uname -m)*/gitr $(HOME)/bin/$(name)
+local: deps fmt vet ## build and install binary to ~/bin
+	$(build_cmd) -o $(build_dir)/$(name) ./cmd/$(name)
+	install -m 0755 $(build_dir)/$(name) $(HOME)/bin/$(name)
 
 # ── release tagging ────────────────────────────────────────────────────────────
 .PHONY: release build-check
