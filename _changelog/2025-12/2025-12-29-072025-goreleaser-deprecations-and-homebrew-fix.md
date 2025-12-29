@@ -28,7 +28,8 @@ Updated `.goreleaser.yaml` to use GoReleaser v2 syntax:
 | Deprecated | Replacement |
 |------------|-------------|
 | `archives.format: binary` | `archives.formats: [tar.gz]` |
-| `brews:` | `homebrews:` |
+
+Note: The `brews` deprecation warning is informational only—`brews` remains the valid field name in GoReleaser v2.
 
 ### 2. Fix Homebrew Install
 

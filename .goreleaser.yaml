@@ -40,7 +40,7 @@ release:
     owner: swarupdonepudi
     name: gitr
 
-homebrews:
+brews:
   - name: gitr
     repository:
       owner: swarupdonepudi
