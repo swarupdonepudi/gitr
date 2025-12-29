@@ -2,7 +2,7 @@
 name        := gitr
 pkg         := github.com/swarupdonepudi/gitr
 build_dir   := dist
-LDFLAGS     := -ldflags "-X $(pkg)/cmd/gitr/root/version.VersionLabel=$$(git describe --tags --always --dirty)"
+LDFLAGS     := -ldflags "-X $(pkg)/cmd/gitr/root.VersionLabel=$$(git describe --tags --always --dirty)"
 
 # ── helper vars ────────────────────────────────────────────────────────────────
 build_cmd   := go build $(LDFLAGS)
@@ -30,7 +30,7 @@ clean:         ## remove build artifacts
 build: build-cli build-site ## build CLI and website
 
 build-cli: deps fmt vet ## build the Go CLI binary
-	$(build_cmd) -o $(build_dir)/$(name) ./cmd/$(name)
+	$(build_cmd) -o $(build_dir)/$(name) .
 
 build-site: ## build the website
 	cd site && NODE_NO_WARNINGS=1 yarn install
@@ -42,13 +42,13 @@ snapshot: deps ## build a local snapshot using GoReleaser
 	goreleaser release --snapshot --clean --skip=publish
 
 local: deps fmt vet ## build and install binary to ~/bin
-	$(build_cmd) -o $(build_dir)/$(name) ./cmd/$(name)
+	$(build_cmd) -o $(build_dir)/$(name) .
 	install -m 0755 $(build_dir)/$(name) $(HOME)/bin/$(name)
 
 # ── release tagging ────────────────────────────────────────────────────────────
 .PHONY: release build-check
 build-check:   ## quick compile to verify build
-	go build -o /dev/null ./cmd/$(name)
+	go build -o /dev/null .
 
 release: test build-check ## tag & push if everything passes
 ifndef version

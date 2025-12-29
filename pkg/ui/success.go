@@ -48,6 +48,7 @@ func RepoAlreadyExists(clonePath string) {
 		}
 	}
 
+	fmt.Println()
 	Info(fmt.Sprintf("Repository already exists at %s", Path(displayPath)))
 }
 
@@ -127,4 +128,12 @@ func ClonePath(path string, clipboardEnabled bool) {
 		// Only show the hint if clipboard was used
 		fmt.Printf("\n   %s\n", Dim("cd command copied to clipboard. Press "+KeyCombo("⌘V")+" to navigate."))
 	}
+}
+
+// Cloning displays a message when starting to clone a repository
+func Cloning(repoUrl string) {
+	fmt.Printf("\n%s  %s %s\n\n",
+		infoIcon.Render("↓"),
+		Dim("Cloning"),
+		Path(repoUrl))
 }

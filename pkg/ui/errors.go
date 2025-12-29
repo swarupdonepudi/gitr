@@ -3,6 +3,7 @@ package ui
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 // Predefined error messages with helpful context
@@ -73,11 +74,29 @@ func FailedToGetBranch(err error) {
 
 // FailedToClone displays an error when cloning fails
 func FailedToClone(err error) {
+	// Check if this is a "repo not found" error and show a clearer message
+	errStr := err.Error()
+	if strings.Contains(strings.ToLower(errStr), "not found") ||
+		strings.Contains(strings.ToLower(errStr), "does not exist") {
+		RepoNotFound()
+		return
+	}
 	Error(
 		"Clone Failed",
 		fmt.Sprintf("Failed to clone the repository: %v", err),
 		"Check your network connection and repository URL",
 		"For private repos, ensure you have the correct access token",
+	)
+}
+
+// RepoNotFound displays an error when a repository doesn't exist
+func RepoNotFound() {
+	Error(
+		"Repository Not Found",
+		"The repository does not exist or you don't have access to it.",
+		"Verify the repository URL is correct",
+		"Check that you have permission to access this repository",
+		"For private repos, ensure your SSH key or token has the right permissions",
 	)
 }
 
