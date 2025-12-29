@@ -24,8 +24,13 @@ builds:
 
 archives:
   - id: default
-    name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}"
-    format: binary
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    formats:
+      - tar.gz
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
 
 checksum:
   name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
@@ -35,7 +40,7 @@ release:
     owner: swarupdonepudi
     name: gitr
 
-brews:
+homebrews:
   - name: gitr
     repository:
       owner: swarupdonepudi
