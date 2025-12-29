@@ -1,13 +1,13 @@
 package root
 
 import (
-	"github.com/plantoncloud/gitr/internal/cli"
-	"github.com/plantoncloud/gitr/pkg/config"
-	"github.com/plantoncloud/gitr/pkg/git"
-	"github.com/plantoncloud/gitr/pkg/url"
-	"github.com/plantoncloud/gitr/pkg/web"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/swarupdonepudi/gitr/internal/cli"
+	"github.com/swarupdonepudi/gitr/pkg/config"
+	"github.com/swarupdonepudi/gitr/pkg/git"
+	"github.com/swarupdonepudi/gitr/pkg/url"
+	"github.com/swarupdonepudi/gitr/pkg/web"
 	"os"
 )
 

@@ -3,7 +3,7 @@ package web
 import (
 	"fmt"
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/plantoncloud/gitr/pkg/config"
+	"github.com/swarupdonepudi/gitr/pkg/config"
 	"os"
 )
 

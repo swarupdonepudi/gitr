@@ -1,7 +1,7 @@
 package web
 
 import (
-	"github.com/plantoncloud/gitr/pkg/config"
+	"github.com/swarupdonepudi/gitr/pkg/config"
 	"testing"
 )
 

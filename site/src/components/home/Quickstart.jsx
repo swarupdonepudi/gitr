@@ -87,21 +87,21 @@ export default function Quickstart() {
             <TabsContent value="homebrew" className="mt-4">
               <CodeBlock filename="Terminal">
 {`# macOS (Homebrew)
-$ brew install plantoncloud/tap/gitr`}
+$ brew install swarupdonepudi/tap/gitr`}
               </CodeBlock>
             </TabsContent>
             
             <TabsContent value="go" className="mt-4">
               <CodeBlock filename="Terminal">
 {`# Go Install (any platform)
-$ go install github.com/plantoncloud/gitr@latest`}
+$ go install github.com/swarupdonepudi/gitr@latest`}
               </CodeBlock>
             </TabsContent>
             
             <TabsContent value="binary" className="mt-4">
               <CodeBlock filename="Terminal">
 {`# Download from releases
-$ curl -L https://github.com/plantoncloud/gitr/releases/latest/download/gitr-$(uname -s)-$(uname -m) -o gitr
+$ curl -L https://github.com/swarupdonepudi/gitr/releases/latest/download/gitr-$(uname -s)-$(uname -m) -o gitr
 $ chmod +x gitr
 $ sudo mv gitr /usr/local/bin/`}
               </CodeBlock>
@@ -194,7 +194,7 @@ $ gitr --dry web`}
               className="border-gray-600 text-gray-300 hover:bg-gray-800"
               asChild
             >
-              <a href="https://github.com/plantoncloud/gitr" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/swarupdonepudi/gitr" target="_blank" rel="noopener noreferrer">
                 Read Full Docs
               </a>
             </Button>

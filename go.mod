@@ -1,4 +1,4 @@
-module github.com/plantoncloud/gitr
+module github.com/swarupdonepudi/gitr
 
 go 1.23.0
 

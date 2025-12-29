@@ -92,7 +92,7 @@ export default function FAQ() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a 
-            href="https://github.com/plantoncloud/gitr" 
+            href="https://github.com/swarupdonepudi/gitr" 
             target="_blank" 
             rel="noopener noreferrer"
             className="px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors"
@@ -100,7 +100,7 @@ export default function FAQ() {
             View Documentation
           </a>
           <a 
-            href="https://github.com/plantoncloud/gitr/issues" 
+            href="https://github.com/swarupdonepudi/gitr/issues" 
             target="_blank" 
             rel="noopener noreferrer"
             className="px-6 py-3 border border-gray-600 hover:bg-gray-800 text-gray-300 rounded-lg transition-colors"

@@ -2,9 +2,9 @@ package config
 
 import (
 	"fmt"
-	"github.com/plantoncloud/gitr/pkg/config"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/swarupdonepudi/gitr/pkg/config"
 	"gopkg.in/yaml.v3"
 )
 

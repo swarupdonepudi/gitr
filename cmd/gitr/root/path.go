@@ -3,11 +3,11 @@ package root
 import (
 	"fmt"
 	"github.com/atotto/clipboard"
-	"github.com/plantoncloud/gitr/internal/cli"
-	"github.com/plantoncloud/gitr/pkg/clone"
-	"github.com/plantoncloud/gitr/pkg/config"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/swarupdonepudi/gitr/internal/cli"
+	"github.com/swarupdonepudi/gitr/pkg/clone"
+	"github.com/swarupdonepudi/gitr/pkg/config"
 )
 
 var Path = &cobra.Command{

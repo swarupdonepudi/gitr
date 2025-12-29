@@ -1,8 +1,8 @@
 package url_test
 
 import (
-	"github.com/plantoncloud/gitr/pkg/config"
-	"github.com/plantoncloud/gitr/pkg/url"
+	"github.com/swarupdonepudi/gitr/pkg/config"
+	"github.com/swarupdonepudi/gitr/pkg/url"
 	"testing"
 )
 
@@ -12,15 +12,15 @@ func TestIsGitUrl(t *testing.T) {
 		isGitUrl bool
 	}{
 		{"git@github.com:swarupdonepudi/gitr.git", true},
-		{"https://github.com/plantoncloud/gitr.git", true},
-		{"https://github.com/plantoncloud/gitr", false},
+		{"https://github.com/swarupdonepudi/gitr.git", true},
+		{"https://github.com/swarupdonepudi/gitr", false},
 		{"git@github.com:swarupdonepudi/gitr", false},
 	}
 	var negativeUrlTests = []struct {
 		url      string
 		isGitUrl bool
 	}{
-		{"https://github.com/plantoncloud/gitr", false},
+		{"https://github.com/swarupdonepudi/gitr", false},
 		{"git@github.com:swarupdonepudi/gitr", false},
 	}
 	t.Run("urls ending with .git should be git urls", func(t *testing.T) {
@@ -45,13 +45,13 @@ func TestIsGitSshUrl(t *testing.T) {
 		isGitSshUrl bool
 	}{
 		{"git@github.com:swarupdonepudi/gitr.git", true},
-		{"ssh://github.com/plantoncloud/gitr.git", true},
+		{"ssh://github.com/swarupdonepudi/gitr.git", true},
 	}
 	var negativeUrlTests = []struct {
 		url         string
 		isGitSshUrl bool
 	}{
-		{"https://github.com/plantoncloud/gitr", false},
+		{"https://github.com/swarupdonepudi/gitr", false},
 		{"github.com:swarupdonepudi/gitr.git", false},
 	}
 	t.Run("urls prefixed with ssh or git should be git ssh urls", func(t *testing.T) {
@@ -77,7 +77,7 @@ func TestIsGitHttpUrlHasUsername(t *testing.T) {
 	}{
 		{"https://swarup@github.com:swarupdonepudi/gitr.git", true},
 		{"https://swarupd@github.com:swarupdonepudi/gitr", true},
-		{"https://github.com/plantoncloud/gitr", false},
+		{"https://github.com/swarupdonepudi/gitr", false},
 		{"github.com:swarupdonepudi/gitr.git", false},
 	}
 
