@@ -82,6 +82,21 @@ var (
 	// Dim text
 	dimStyle = lipgloss.NewStyle().
 			Foreground(colorGray)
+
+	// Progress styles
+	progressSpinner = lipgloss.NewStyle().
+			Foreground(colorBlue).
+			Bold(true)
+
+	progressBar = lipgloss.NewStyle().
+			Foreground(colorBlue)
+
+	progressText = lipgloss.NewStyle().
+			Foreground(colorGray)
+
+	progressComplete = lipgloss.NewStyle().
+				Foreground(colorGreen).
+				Bold(true)
 )
 
 // Box styles for framed messages
