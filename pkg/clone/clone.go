@@ -187,10 +187,21 @@ func httpClone(url, clonePath string) error {
 	if err := os.MkdirAll(clonePath, os.ModePerm); err != nil {
 		return errors.Wrapf(err, "failed to created dir %s", clonePath)
 	}
+
+	// Create fancy progress display
+	display := ui.NewCloneProgressDisplay()
+	display.Start()
+
+	// go-git will output progress
 	_, err := git.PlainClone(clonePath, false, &git.CloneOptions{
 		URL:      url,
-		Progress: os.Stdout,
+		Progress: display.Writer(),
 	})
+
+	// Stop the progress display
+	display.Stop()
+	fmt.Println() // Add newline after progress
+
 	return err
 }
 
@@ -198,14 +209,25 @@ func httpsGitClone(repoUrl, token, clonePath string) error {
 	if err := os.MkdirAll(clonePath, os.ModePerm); err != nil {
 		return errors.Wrapf(err, "failed to created dir %s", clonePath)
 	}
+
+	// Create fancy progress display
+	display := ui.NewCloneProgressDisplay()
+	display.Start()
+
+	// go-git will output progress
 	_, err := git.PlainClone(clonePath, false, &git.CloneOptions{
 		URL:      repoUrl,
-		Progress: os.Stdout,
+		Progress: display.Writer(),
 		Auth: &http.BasicAuth{
 			Username: "abc123", // this can be anything except an empty string
 			Password: token,
 		},
 	})
+
+	// Stop the progress display
+	display.Stop()
+	fmt.Println() // Add newline after progress
+
 	if err != nil {
 		return errors.Wrapf(err, "failed to clone repo using personal access token %s", token)
 	}
@@ -216,17 +238,31 @@ func sshClone(repoUrl, clonePath string) error {
 	if err := os.MkdirAll(clonePath, os.ModePerm); err != nil {
 		return errors.Wrapf(err, "failed to create dir %s", clonePath)
 	}
-	cmd := exec.Command("git", "clone", repoUrl, clonePath)
-	// Capture stderr to detect "repository not found" errors
-	var stderr strings.Builder
-	cmd.Stderr = io.MultiWriter(os.Stderr, &stderr)
-	cmd.Stdout = os.Stdout
 
-	if err := cmd.Run(); err != nil {
-		stderrStr := stderr.String()
+	// Create fancy progress display
+	display := ui.NewCloneProgressDisplay()
+	display.Start()
+
+	// Use --progress to force git to show progress even when stderr is not a TTY
+	cmd := exec.Command("git", "clone", "--progress", repoUrl, clonePath)
+
+	// Capture stderr for both progress parsing and error detection
+	var stderrBuf strings.Builder
+	cmd.Stderr = io.MultiWriter(display.Writer(), &stderrBuf)
+	cmd.Stdout = io.Discard // Suppress stdout since we're showing fancy progress
+
+	err := cmd.Run()
+
+	// Stop the progress display
+	display.Stop()
+	fmt.Println() // Add newline after progress
+
+	if err != nil {
+		stderrStr := stderrBuf.String()
 		// Include stderr in the error so we can detect specific failure reasons
 		return errors.Errorf("clone failed: %s", stderrStr)
 	}
+
 	return nil
 }
 
