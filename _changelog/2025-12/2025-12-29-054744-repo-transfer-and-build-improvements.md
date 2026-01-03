@@ -8,7 +8,7 @@ Transferred the gitr repository from `plantoncloud` to `swarupdonepudi` organiza
 
 ## Problem Statement
 
-After transferring the repository from `github.com/plantoncloud/gitr` to `github.com/swarupdonepudi/gitr`, all internal references needed to be updated to reflect the new ownership. Additionally, the build system lacked a unified build command, and test files were separated from their source packages in a `pkg_test/` directory.
+After transferring the repository from `github.com/swarupdonepudi/gitr` to `github.com/swarupdonepudi/gitr`, all internal references needed to be updated to reflect the new ownership. Additionally, the build system lacked a unified build command, and test files were separated from their source packages in a `pkg_test/` directory.
 
 ### Pain Points
 
@@ -25,7 +25,7 @@ Comprehensive find-and-replace across the entire repository, build system improv
 
 ### Key Components
 
-1. **Go Module Migration**: Updated module path from `github.com/plantoncloud/gitr` to `github.com/swarupdonepudi/gitr`
+1. **Go Module Migration**: Updated module path from `github.com/swarupdonepudi/gitr` to `github.com/swarupdonepudi/gitr`
 2. **Build System**: Added unified `make build` target with separate `build-cli` and `build-site` sub-targets
 3. **Package Manager Switch**: Migrated website from npm to Yarn
 4. **Test Co-location**: Moved tests from `pkg_test/` to their respective `pkg/` directories
@@ -45,7 +45,7 @@ Updated all references in:
 
 Changed hardcoded paths to portable tilde notation:
 ```
-/Users/suresh/scm/github.com/plantoncloud/gitr → ~/scm/github.com/swarupdonepudi/gitr
+/Users/suresh/scm/github.com/swarupdonepudi/gitr → ~/scm/github.com/swarupdonepudi/gitr
 ```
 
 ### Build System Improvements
