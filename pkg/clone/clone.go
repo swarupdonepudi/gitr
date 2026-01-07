@@ -24,6 +24,9 @@ import (
 )
 
 func Clone(cfg *config.GitrConfig, inputUrl string, token string, creDir, dry bool) (repoLocation string, err error) {
+	// Strip query parameters and fragments from URLs (handles browser URLs with tracking params like ?utm_source=...)
+	inputUrl = url.StripQueryParams(inputUrl)
+
 	s, err := config.GetScmHost(cfg, url.GetHostname(inputUrl))
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to clone git repo with %s url", inputUrl)
@@ -86,7 +89,11 @@ func Clone(cfg *config.GitrConfig, inputUrl string, token string, creDir, dry bo
 		if isRepoNotFoundError(err) {
 			return "", errors.New("repository not found. Please verify the URL exists and you have access")
 		}
-		ui.Warn("SSH Clone Failed", "Trying HTTP clone instead...")
+		// Clean up the directory from failed SSH clone before trying HTTP
+		if err := os.RemoveAll(repoLocation); err != nil {
+			log.Debugf("failed to clean up directory after SSH clone failure: %v", err)
+		}
+		log.Debugf("SSH clone failed, trying HTTP fallback: %v", err)
 		httpCloneUrl := GetHttpCloneUrl(s.Hostname, repoPath, s.Scheme)
 		if err := httpClone(httpCloneUrl, repoLocation); err != nil {
 			return "", errors.Wrap(err, "error cloning the repo using http")
@@ -101,12 +108,16 @@ func isRepoNotFoundError(err error) bool {
 		return false
 	}
 	errStr := strings.ToLower(err.Error())
+	// These patterns are specific to repository-not-found errors from git hosts.
+	// Avoid overly broad patterns like "not found" which match unrelated errors
+	// (e.g., "host not found", "key not found", network errors).
 	notFoundPatterns := []string{
 		"repository not found",
 		"repo not found",
-		"does not exist",
-		"could not find",
-		"not found",
+		"remote: repository not found",
+		"project not found",
+		"the project you were looking for could not be found", // GitLab
+		"error: repository '", // Start of git's "repository 'X' not found" message
 	}
 	for _, pattern := range notFoundPatterns {
 		if strings.Contains(errStr, pattern) {
@@ -117,6 +128,9 @@ func isRepoNotFoundError(err error) bool {
 }
 
 func GetClonePath(cfg *config.GitrConfig, inputUrl string, creDir bool) (string, error) {
+	// Strip query parameters and fragments from URLs (handles browser URLs with tracking params like ?utm_source=...)
+	inputUrl = url.StripQueryParams(inputUrl)
+
 	s, err := config.GetScmHost(cfg, url.GetHostname(inputUrl))
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to get scm host for %s", url.GetHostname(inputUrl))
@@ -200,7 +214,6 @@ func httpClone(url, clonePath string) error {
 
 	// Stop the progress display
 	display.Stop()
-	fmt.Println() // Add newline after progress
 
 	return err
 }
@@ -226,7 +239,6 @@ func httpsGitClone(repoUrl, token, clonePath string) error {
 
 	// Stop the progress display
 	display.Stop()
-	fmt.Println() // Add newline after progress
 
 	if err != nil {
 		return errors.Wrapf(err, "failed to clone repo using personal access token %s", token)
@@ -255,7 +267,6 @@ func sshClone(repoUrl, clonePath string) error {
 
 	// Stop the progress display
 	display.Stop()
-	fmt.Println() // Add newline after progress
 
 	if err != nil {
 		stderrStr := stderrBuf.String()

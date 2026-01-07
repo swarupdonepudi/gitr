@@ -132,7 +132,7 @@ func ClonePath(path string, clipboardEnabled bool) {
 
 // Cloning displays a message when starting to clone a repository
 func Cloning(repoUrl string) {
-	fmt.Printf("\n%s  %s %s\n\n",
+	fmt.Printf("\n%s  %s %s\n",
 		infoIcon.Render("↓"),
 		Dim("Cloning"),
 		Path(repoUrl))
