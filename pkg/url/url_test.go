@@ -113,6 +113,38 @@ func TestIsGitRepoName(t *testing.T) {
 	})
 }
 
+func TestStripQueryParams(t *testing.T) {
+	var tests = []struct {
+		input    string
+		expected string
+	}{
+		// URLs with query params (browser URLs with tracking)
+		{"https://github.com/actions/actions-runner-controller?utm_source=chatgpt.com", "https://github.com/actions/actions-runner-controller"},
+		{"https://github.com/owner/repo?ref=main&utm_campaign=test", "https://github.com/owner/repo"},
+		// URLs with fragments
+		{"https://github.com/owner/repo#readme", "https://github.com/owner/repo"},
+		{"https://github.com/owner/repo?foo=bar#section", "https://github.com/owner/repo"},
+		// Clean URLs should remain unchanged
+		{"https://github.com/owner/repo", "https://github.com/owner/repo"},
+		{"https://github.com/owner/repo.git", "https://github.com/owner/repo.git"},
+		// SSH URLs
+		{"git@github.com:owner/repo.git", "git@github.com:owner/repo.git"},
+		{"git@github.com:owner/repo.git?foo=bar", "git@github.com:owner/repo.git"},
+		// ssh:// protocol
+		{"ssh://git@github.com/owner/repo.git", "ssh://git@github.com/owner/repo.git"},
+		{"ssh://git@github.com/owner/repo.git?param=value", "ssh://git@github.com/owner/repo.git"},
+	}
+
+	t.Run("should strip query params and fragments from URLs", func(t *testing.T) {
+		for _, tc := range tests {
+			result := url.StripQueryParams(tc.input)
+			if result != tc.expected {
+				t.Errorf("expected %s but got %s for input %s", tc.expected, result, tc.input)
+			}
+		}
+	})
+}
+
 func TestGetRepoPath(t *testing.T) {
 	var githubTests = []struct {
 		url      string

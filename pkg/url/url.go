@@ -1,13 +1,49 @@
 package url
 
 import (
+	"net/url"
+	"regexp"
+	"strings"
+
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/skratchdot/open-golang/open"
 	"github.com/swarupdonepudi/gitr/pkg/config"
-	"regexp"
-	"strings"
 )
+
+// StripQueryParams removes query parameters and fragments from URLs.
+// This handles URLs copied from browsers that include tracking params like ?utm_source=...
+func StripQueryParams(inputUrl string) string {
+	// Handle SSH URLs (git@host:path) - they don't have query params
+	if strings.HasPrefix(inputUrl, "git@") && !strings.Contains(inputUrl, "://") {
+		// For SSH format git@host:path, query params would be after the path
+		if idx := strings.Index(inputUrl, "?"); idx != -1 {
+			return inputUrl[:idx]
+		}
+		if idx := strings.Index(inputUrl, "#"); idx != -1 {
+			return inputUrl[:idx]
+		}
+		return inputUrl
+	}
+
+	// For HTTP(S) and ssh:// URLs, use proper URL parsing
+	parsed, err := url.Parse(inputUrl)
+	if err != nil {
+		// If parsing fails, fall back to simple string manipulation
+		if idx := strings.Index(inputUrl, "?"); idx != -1 {
+			return inputUrl[:idx]
+		}
+		if idx := strings.Index(inputUrl, "#"); idx != -1 {
+			return inputUrl[:idx]
+		}
+		return inputUrl
+	}
+
+	// Reconstruct URL without query params or fragment
+	parsed.RawQuery = ""
+	parsed.Fragment = ""
+	return parsed.String()
+}
 
 func IsGitUrl(repoUrl string) bool {
 	return strings.HasSuffix(repoUrl, ".git")
