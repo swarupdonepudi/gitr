@@ -53,6 +53,13 @@ build-check:   ## quick compile to verify build
 # bump: major, minor, or patch (default)
 bump ?= patch
 
+# Detect if version was explicitly provided on command line
+ifeq ($(origin version),command line)
+VERSION_EXPLICIT := true
+else
+VERSION_EXPLICIT := false
+endif
+
 next-version:  ## show what the next version would be
 	@latest=$$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"); \
 	major=$$(echo $$latest | sed 's/v//' | cut -d. -f1); \
@@ -66,22 +73,27 @@ next-version:  ## show what the next version would be
 	esac; \
 	echo "v$$major.$$minor.$$patch"
 
-release: test build-check ## auto-bump version, tag & push (bump=major|minor|patch, default: patch)
-	@latest=$$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"); \
-	major=$$(echo $$latest | sed 's/v//' | cut -d. -f1); \
-	minor=$$(echo $$latest | sed 's/v//' | cut -d. -f2); \
-	patch=$$(echo $$latest | sed 's/v//' | cut -d. -f3); \
-	case "$(bump)" in \
-		major) major=$$((major + 1)); minor=0; patch=0 ;; \
-		minor) minor=$$((minor + 1)); patch=0 ;; \
-		patch) patch=$$((patch + 1)) ;; \
-		*) echo "Invalid bump type: $(bump). Use major, minor, or patch"; exit 1 ;; \
-	esac; \
-	version="v$$major.$$minor.$$patch"; \
-	echo "Current version: $$latest"; \
-	echo "Releasing: $$version ($(bump) bump)"; \
-	git tag -a $$version -m "$$version"; \
-	git push origin $$version
+release: test build-check ## auto-bump version, tag & push (bump=major|minor|patch, default: patch). Override with version=vX.Y.Z
+	@if [ "$(VERSION_EXPLICIT)" = "true" ]; then \
+		rel_version="$(version)"; \
+		echo "Releasing: $$rel_version (explicit version)"; \
+	else \
+		latest=$$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"); \
+		major=$$(echo $$latest | sed 's/v//' | cut -d. -f1); \
+		minor=$$(echo $$latest | sed 's/v//' | cut -d. -f2); \
+		patch=$$(echo $$latest | sed 's/v//' | cut -d. -f3); \
+		case "$(bump)" in \
+			major) major=$$((major + 1)); minor=0; patch=0 ;; \
+			minor) minor=$$((minor + 1)); patch=0 ;; \
+			patch) patch=$$((patch + 1)) ;; \
+			*) echo "Invalid bump type: $(bump). Use major, minor, or patch"; exit 1 ;; \
+		esac; \
+		rel_version="v$$major.$$minor.$$patch"; \
+		echo "Current version: $$latest"; \
+		echo "Releasing: $$rel_version ($(bump) bump)"; \
+	fi; \
+	git tag -a $$rel_version -m "$$rel_version"; \
+	git push origin $$rel_version
 
 # ── default target ─────────────────────────────────────────────────────────────
 .DEFAULT_GOAL := test
