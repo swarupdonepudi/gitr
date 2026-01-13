@@ -52,6 +52,7 @@ func init() {
 		root.ReleasesCmd,
 		root.RemCmd,
 		root.TagsCmd,
+		root.Upgrade,
 		root.WebCmd,
 		root.WebUrlCmd,
 	)
