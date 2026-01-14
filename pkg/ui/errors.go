@@ -54,6 +54,43 @@ func CloneURLRequired() {
 	)
 }
 
+// InvalidCloneURLCdCommand displays an error when a cd command was pasted instead of a URL
+// This typically happens when clipboard is overwritten by another gitr clone operation
+func InvalidCloneURLCdCommand(input, detectedPath string) {
+	Error(
+		"Invalid Clone URL",
+		"Received a "+Cmd("cd")+" command instead of a repository URL:\n"+
+			Dim(input),
+		"Your clipboard was likely overwritten by another gitr clone that just finished",
+		"Re-copy the repository URL and try again",
+		"Example: "+Cmd("gitr clone https://github.com/owner/repo"),
+	)
+}
+
+// InvalidCloneURLLocalPath displays an error when a local path was provided instead of a URL
+func InvalidCloneURLLocalPath(input string) {
+	Error(
+		"Invalid Clone URL",
+		"Received a local filesystem path instead of a repository URL:\n"+
+			Path(input),
+		"gitr clone expects a remote repository URL, not a local path",
+		"For SSH: "+Cmd("gitr clone git@github.com:owner/repo.git"),
+		"For HTTPS: "+Cmd("gitr clone https://github.com/owner/repo"),
+	)
+}
+
+// InvalidCloneURLFormat displays an error for URLs that don't match expected patterns
+func InvalidCloneURLFormat(input string) {
+	Error(
+		"Invalid Clone URL",
+		"Could not recognize this as a valid repository URL:\n"+
+			Dim(input),
+		"For SSH: "+Cmd("git@<host>:<owner>/<repo>.git"),
+		"For HTTPS: "+Cmd("https://<host>/<owner>/<repo>"),
+		"For browser URLs: "+Cmd("https://github.com/<owner>/<repo>"),
+	)
+}
+
 // NoRemotesFound displays an error when git repo has no remotes
 func NoRemotesFound() {
 	Error(

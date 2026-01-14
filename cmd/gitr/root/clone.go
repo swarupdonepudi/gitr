@@ -9,6 +9,7 @@ import (
 	"github.com/swarupdonepudi/gitr/pkg/clone"
 	"github.com/swarupdonepudi/gitr/pkg/config"
 	"github.com/swarupdonepudi/gitr/pkg/ui"
+	"github.com/swarupdonepudi/gitr/pkg/url"
 )
 
 var Clone = &cobra.Command{
@@ -25,8 +26,36 @@ func init() {
 func cloneHandler(cmd *cobra.Command, args []string) {
 	if len(args) <= 0 {
 		ui.CloneURLRequired()
+		return
 	}
 	inputUrl := args[0]
+
+	// Special case: detect "cd <path>" pasted from clipboard that got split by shell
+	// When user pastes "cd /path/to/repo", shell splits into args: ["cd", "/path/to/repo"]
+	// This happens when another gitr clone finishes and overwrites clipboard with cd command
+	if inputUrl == "cd" && len(args) >= 2 {
+		reconstructedCmd := "cd " + args[1]
+		ui.InvalidCloneURLCdCommand(reconstructedCmd, args[1])
+		return
+	}
+
+	// Validate the URL before proceeding
+	// This catches common mistakes like clipboard being overwritten by another gitr clone
+	validation := url.ValidateCloneURL(inputUrl)
+	if !validation.Valid {
+		switch validation.Reason {
+		case url.InvalidURLReasonCdCommand:
+			ui.InvalidCloneURLCdCommand(validation.Input, validation.DetectedPath)
+		case url.InvalidURLReasonLocalPath:
+			ui.InvalidCloneURLLocalPath(validation.Input)
+		case url.InvalidURLReasonEmpty:
+			ui.CloneURLRequired()
+		default:
+			ui.InvalidCloneURLFormat(validation.Input)
+		}
+		return
+	}
+
 	dry, err := cmd.InheritedFlags().GetBool(string(cli.Dry))
 	cli.HandleFlagErr(err, cli.Dry)
 	creDir, err := cmd.PersistentFlags().GetBool(string(cli.CreDir))
